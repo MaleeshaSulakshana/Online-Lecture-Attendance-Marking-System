@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>NSBM Lecture Attendance</title>
+
+  <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="vendors/base/vendor.bundle.base.css">
+  <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="shortcut icon" href="images/nsbm.png" />
+
+</head>
+
+<body>
+  <div class="container-scroller">
+
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="navbar-brand-wrapper d-flex justify-content-center">
+        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+          <a class="navbar-brand brand-logo" href="index.html"><img src="images/nsbm_logo.png" alt="logo" /></a>
+          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/nsbm.png" alt="logo" /></a>
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="mdi mdi-sort-variant"></span>
+          </button>
+        </div>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item nav-profile dropdown">
+            <a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
+              <img src="images/nsbm.png" alt="profile" />
+              <span class="nav-profile-name">NSBM</span>
+            </a>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+          data-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+
+
+    <div class="container-fluid page-body-wrapper">
+
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              <i class="mdi mdi-home menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="host_lecture.html">
+              <i class="mdi mdi-view-headline menu-icon"></i>
+              <span class="menu-title">Host Attendance</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-md-12 grid-margin">
+              <div class="d-flex justify-content-between flex-wrap">
+                <div class="d-flex align-items-end flex-wrap">
+                  <div class="d-flex">
+                    <p class="text-muted mb-0 hover-cursor">&nbsp;Map&nbsp;</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" id="map" style="width:100%;height:1000px;"></div>
+
+        </div>
+
+      </div>
+
+
+      <script src="vendors/base/vendor.bundle.base.js"></script>
+      <script src="vendors/chart.js/Chart.min.js"></script>
+      <script src="vendors/datatables.net/jquery.dataTables.js"></script>
+      <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+      <script src="js/off-canvas.js"></script>
+      <script src="js/hoverable-collapse.js"></script>
+      <script src="js/template.js"></script>
+      <script src="js/dashboard.js"></script>
+      <script src="js/data-table.js"></script>
+      <script src="js/jquery.dataTables.js"></script>
+      <script src="js/dataTables.bootstrap4.js"></script>
+      <script src="js/jquery-3.1.1.min.js"></script>
+      <script src="js/sweetalert2@11.js"></script>
+
+
+      <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-analytics.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-database.js"></script>
+
+      <script src="firebase_connection/firebase_connection.js"></script>
+
+
+      <script>
+
+        function lectureMap() {
+
+          // Get url parameter
+          const urlParams = new URLSearchParams(window.location.search);
+          const lectureId = urlParams.get('lectureId');
+
+          // Initialize firebase connection
+          var config = firebaseConfiguration();
+          firebase.initializeApp(config);
+          firebase.analytics();
+
+          var database = firebase.database();
+          const locations = [];
+
+          // Forces point on map
+          var center = new google.maps.LatLng(6.8209928680226835, 80.04000313717783);
+
+          // Zoom google map on location
+          var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 16,
+            center: center,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          });
+
+          // Draw circle on google map
+          var circle = new google.maps.Circle({
+            center: center,
+            map: map,
+            radius: 180,
+            fillColor: '#F6354A',
+            fillOpacity: 0.2,
+            strokeColor: "#F6354A",
+            strokeWeight: 2
+          });
+
+          var infowindow = new google.maps.InfoWindow();
+          var marker;
+
+          // Get lecture attendees data from firebase
+          firebase.database().ref('lectures/' + lectureId + "/attendees/").on('value', function (snapshot) {
+            var value = snapshot.val();
+            // Loop data
+            $.each(value, function (index, value) {
+              if (value) {
+
+                var latitude = value.latitude
+                var longitude = value.longitude
+
+                // Check location within given rectangle
+                if ((latitude > 6.8194268071825945 && longitude > 80.03766240986839 &&
+                  latitude < 6.822002127441593 && longitude < 80.04174731747194)) {
+                  var color = "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                } else {
+                  var color = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+
+                }
+
+                // Append data to the array
+                locations.push(['' + value.name + '<br>\<a href="student_details.html?studentID=' + value.id + '">Details</a>',
+                  latitude, longitude, color, index]);
+
+              }
+              lastIndex = index;
+            });
+
+            if (locations.length != 0) {
+              // Set location on google map
+              for (i = 0; i < locations.length; i++) {
+
+                marker = new google.maps.Marker({
+                  position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                  map: map,
+                  icon: locations[i][3],
+
+                });
+
+                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                  return function () {
+                    infowindow.setContent(locations[i][0]);
+                    infowindow.open(map, marker);
+                  }
+                })(marker, i));
+
+              }
+
+            }
+          });
+
+        }
+      </script>
+
+
+      <!-- Set google map on dic class -->
+      <script src="https://maps.googleapis.com/maps/api/js?key=&callback=lectureMap"></script>
+
+</body>
+
+</html>

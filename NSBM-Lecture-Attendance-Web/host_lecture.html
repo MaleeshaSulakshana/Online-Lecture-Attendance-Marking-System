@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>NSBM Lecture Attendance Host</title>
+
+  <link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="vendors/base/vendor.bundle.base.css">
+  <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="shortcut icon" href="images/nsbm.png" />
+
+</head>
+
+<body>
+  <div class="container-scroller">
+
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="navbar-brand-wrapper d-flex justify-content-center">
+        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+          <a class="navbar-brand brand-logo" href="index.html"><img src="images/nsbm_logo.png" alt="logo" /></a>
+          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/nsbm.png" alt="logo" /></a>
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="mdi mdi-sort-variant"></span>
+          </button>
+        </div>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item nav-profile dropdown">
+            <a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
+              <img src="images/nsbm.png" alt="profile" />
+              <span class="nav-profile-name">NSBM</span>
+            </a>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+          data-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+
+
+    <div class="container-fluid page-body-wrapper">
+
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              <i class="mdi mdi-home menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="host_lecture.html">
+              <i class="mdi mdi-view-headline menu-icon"></i>
+              <span class="menu-title">Host Attendance</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-md-12 grid-margin">
+              <div class="d-flex justify-content-between flex-wrap">
+                <div class="d-flex align-items-end flex-wrap">
+                  <div class="d-flex">
+                    <p class="text-muted mb-0 hover-cursor">&nbsp;Host Lecture Attendance&nbsp;</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+
+            <div class="col-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+
+                  <form class="forms-sample" id="lectureForm">
+
+                    <div class="form-group">
+                      <label for="lecture-title">Lecture Title</label>
+                      <input type="text" class="form-control" id="lecture-title" placeholder="Lecture Title">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="lecture-name">Lecture Name</label>
+                      <input type="text" class="form-control" id="lecture-name" placeholder="Lecture Name">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="batch">Batch</label>
+                      <input type="text" class="form-control" id="batch" placeholder="Batch">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="lecture-time">Lecture Time Start</label>
+                      <input type="time" class="form-control" id="lecture-time" min="08:00" max="17:00"
+                        placeholder="Lecture Time">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="lecture-end">Lecture Time End</label>
+                      <input type="time" class="form-control" id="lecture-end" min="08:00" max="17:00"
+                        placeholder="Lecture Time End">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="lecture-date">Lecture Date</label>
+                      <input type="date" class="form-control" id="lecture-date" placeholder="Lecture Date">
+                    </div>
+
+                    <button type="submit" id="addLecture" class="btn btn-primary mr-2">Add</button>
+                    <button class="btn btn-light">Cancel</button>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="vendors/base/vendor.bundle.base.js"></script>
+  <script src="vendors/chart.js/Chart.min.js"></script>
+  <script src="vendors/datatables.net/jquery.dataTables.js"></script>
+  <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+  <script src="js/off-canvas.js"></script>
+  <script src="js/hoverable-collapse.js"></script>
+  <script src="js/template.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/data-table.js"></script>
+  <script src="js/jquery.dataTables.js"></script>
+  <script src="js/dataTables.bootstrap4.js"></script>
+  <script src="js/jquery-3.1.1.min.js"></script>
+  <script src="js/sweetalert2@11.js"></script>
+
+
+  <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-database.js"></script>
+
+  <script src="firebase_connection/firebase_connection.js"></script>
+
+  <script>
+
+    // Initialize firebase connection
+    var config = firebaseConfiguration();
+    firebase.initializeApp(config);
+    firebase.analytics();
+
+    var database = firebase.database();
+
+    // Set button onclick event
+    $('#addLecture').on('click', function (e) {
+
+      // Check fields not empty 
+      if ($('#lecture-title').val() != "" || $('#lecture-name').val() != "" || $('#batch').val() != "" ||
+        $('#lecture-time').val() != "" || $('#lecture-end').val() != "" || $('#lecture-date').val() != "") {
+
+        // Get current date
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
+        var today = new Date(today);
+        var lectureDate = new Date($('#lecture-date').val());
+
+        // Check date is validate
+        if (today <= lectureDate) {
+          // Validate start time and end time
+          if ($('#lecture-time').val() < $('#lecture-end').val()) {
+
+            // Validate lecture times
+            if ($('#lecture-time').val() >= "08:00" && $('#lecture-time').val() <= "17:00") {
+              if ($('#lecture-end').val() >= "08:00" && $('#lecture-end').val() <= "17:00") {
+
+                // Get form data to variables
+                var lectureTitle = $('#lecture-title').val();
+                var lectureName = $('#lecture-name').val();
+                var batch = $('#batch').val();
+                var lectureTime = $('#lecture-time').val();
+                var lectureEnd = $('#lecture-end').val();
+                var lectureDate = $('#lecture-date').val();
+                var id = Math.floor(Math.random() * 1000000000);
+
+                // Insert data to firebase
+                firebase.database().ref('lectures/' + id).set({
+                  lectureId: id,
+                  lectureTitle: lectureTitle,
+                  lectureName: lectureName,
+                  batch: batch,
+                  lectureTime: lectureTime,
+                  lectureEnd: lectureEnd,
+                  lectureDate: lectureDate,
+                });
+
+                $("#lectureForm input").val("");
+
+                // Success msg
+                Swal.fire(
+                  'Host Lecture Attendance',
+                  'Attendance sheet host success!',
+                  'success'
+                )
+
+                // Warning msg
+              } else {
+                Swal.fire(
+                  'Host Lecture Attendance',
+                  'Please check end time!',
+                  'warning'
+                )
+              }
+
+              // Warning msg
+            } else {
+              Swal.fire(
+                'Host Lecture Attendance',
+                'Please check start time!',
+                'warning'
+              )
+            }
+
+            // Warning msg
+          } else {
+            Swal.fire(
+              'Host Lecture Attendance',
+              'Please check start time and end time!',
+              'warning'
+            )
+          }
+
+          // Warning msg
+        } else {
+          Swal.fire(
+            'Host Lecture Attendance',
+            'Please check date!',
+            'warning'
+          )
+        }
+
+        // Warning msg
+      } else {
+        Swal.fire(
+          'Host Lecture Attendance',
+          'Fields are empty!',
+          'warning'
+        )
+      }
+
+      return false;
+    });
+
+  </script>
+
+
+</body>
+
+</html>

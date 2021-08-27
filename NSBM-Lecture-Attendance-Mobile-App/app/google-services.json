@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "177626227278",
+    "project_id": "nsbm-lecture-attendance",
+    "storage_bucket": "nsbm-lecture-attendance.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177626227278:android:d22ea87b18e311d872d91f",
+        "android_client_info": {
+          "package_name": "com.example.nsbmlectureattendance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "177626227278-q39f5bl8hlq6vt1esbcsitcrphjh548v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApRQ36Tas_lgwBXaaCtuTfAlFHaA-Dhlw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "177626227278-q39f5bl8hlq6vt1esbcsitcrphjh548v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
